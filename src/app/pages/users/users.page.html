@@ -10,42 +10,35 @@
       <ion-title size="large">users</ion-title>
     </ion-toolbar>
   </ion-header>
-    <ion-card>
-      <ion-grid>
-        <ion-row>
-          <ion-col>
-            <ion-label>
-              <p>Nombre</p>
-            </ion-label>
-          </ion-col>
-          <ion-col>
-            <ion-label>
-              <p>Usuario</p>
-            </ion-label>
-          </ion-col>
-          <ion-col>
-            <ion-label>
-              <p>Email</p>
-            </ion-label>
-          </ion-col>
-        </ion-row>
-        <ion-row *ngFor="let user of users">
-          <ion-col>
-            <ion-label>
-              <p>{{user.name}} {{user.lastname}}</p>
-            </ion-label>
-          </ion-col>
-          <ion-col>
-            <ion-label>
-              <p>{{user.username}}</p>
-            </ion-label>
-          </ion-col>
-          <ion-col>
-            <ion-label>
-              <p>{{user.email}}</p>
-            </ion-label>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
+
+  <div id="search">
+    <ion-item>
+      <ion-input [(ngModel)]="searchUserId"></ion-input>
+      <ion-button (click)="searchUser(searchUserId)" slot="end">
+        <ion-icon name="search"></ion-icon>
+      </ion-button>
+      <ion-button (click)="clearSearch()" slot="end">
+        <ion-icon name="refresh"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </div>
+  <div id="card">
+    <ion-card *ngFor="let user of users">
+      <ion-card-header>
+        <ion-card-title>{{ user.username }}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <p>Nombre: {{ user.name }} {{ user.lastname }}</p>
+            <p>Email: {{ user.email }}</p>
+            <p>Edad: {{ user.age }}</p>
+          </div>
+          <ion-button size="small" fill="clear" (click)="confirmDelete(user.id)">
+            <ion-icon name="trash"></ion-icon>
+          </ion-button>
+        </div>
+      </ion-card-content>
     </ion-card>
+  </div>
 </ion-content>
