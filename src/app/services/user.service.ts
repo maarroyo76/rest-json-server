@@ -16,7 +16,7 @@ export class UserService {
   }
 
   getUser(userId: number){
-    return this.http.get<User>('http://localhost:3000/users' + userId);
+    return this.http.get<User>('http://localhost:3000/users/' + userId);
   }
 
   postUser(newUser: User){
@@ -24,6 +24,6 @@ export class UserService {
   }
 
   deleteUser(userId: number){
-    return this.http.delete('http://localhost:3000/users' + userId);
+    return this.http.delete('http://localhost:3000/users/' + userId);
   }
 }
