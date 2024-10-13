@@ -1,42 +1,127 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>users</ion-title>
+    <ion-title>Usuarios</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">users</ion-title>
+      <ion-title size="large">Usuarios</ion-title>
     </ion-toolbar>
   </ion-header>
 
   <div id="search">
     <ion-item>
-      <ion-input [(ngModel)]="searchUserId"></ion-input>
+      <ion-input placeholder="Buscar por ID" [(ngModel)]="searchUserId" type="number"></ion-input>
       <ion-button (click)="searchUser(searchUserId)" slot="end">
         <ion-icon name="search"></ion-icon>
       </ion-button>
       <ion-button (click)="clearSearch()" slot="end">
-        <ion-icon name="refresh"></ion-icon>
+        <ion-icon name="refresh-outline"></ion-icon>
       </ion-button>
     </ion-item>
   </div>
+
   <div id="card">
     <ion-card *ngFor="let user of users">
       <ion-card-header>
-        <ion-card-title>{{ user.username }}</ion-card-title>
+        <ion-card-title>
+          <ng-container *ngIf="editingUserId !== user.id; else editModeTitle">
+            {{ user.username }}
+          </ng-container>
+          <ng-template #editModeTitle>
+            <ion-item>
+              <ion-input [(ngModel)]="editedUser!.username" placeholder="Username"></ion-input>
+              <ion-button fill="clear" size="small" (click)="editedUser!.username = ''">
+                <ion-icon name="trash-outline"></ion-icon>
+              </ion-button>
+            </ion-item>
+          </ng-template>
+        </ion-card-title>
       </ion-card-header>
       <ion-card-content>
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-          <div>
-            <p>Nombre: {{ user.name }} {{ user.lastname }}</p>
-            <p>Email: {{ user.email }}</p>
-            <p>Edad: {{ user.age }}</p>
-          </div>
-          <ion-button size="small" fill="clear" (click)="confirmDelete(user.id)">
-            <ion-icon name="trash"></ion-icon>
-          </ion-button>
+        <!-- Nombre -->
+        <div>
+          <strong>Nombre:</strong>
+          <ng-container *ngIf="editingUserId !== user.id; else editModeName">
+            {{ user.name }}
+          </ng-container>
+          <ng-template #editModeName>
+            <ion-item>
+              <ion-input [(ngModel)]="editedUser!.name" placeholder="Nombre"></ion-input>
+              <ion-button fill="clear" size="small" (click)="editedUser!.name = ''">
+                <ion-icon name="trash-outline"></ion-icon>
+              </ion-button>
+            </ion-item>
+          </ng-template>
+        </div>
+
+        <!-- Apellido -->
+        <div>
+          <strong>Apellido:</strong>
+          <ng-container *ngIf="editingUserId !== user.id; else editModeLastname">
+            {{ user.lastname }}
+          </ng-container>
+          <ng-template #editModeLastname>
+            <ion-item>
+              <ion-input [(ngModel)]="editedUser!.lastname" placeholder="Apellido"></ion-input>
+              <ion-button fill="clear" size="small" (click)="editedUser!.lastname = ''">
+                <ion-icon name="trash-outline"></ion-icon>
+              </ion-button>
+            </ion-item>
+          </ng-template>
+        </div>
+
+        <!-- Email -->
+        <div>
+          <strong>Email:</strong>
+          <ng-container *ngIf="editingUserId !== user.id; else editModeEmail">
+            {{ user.email }}
+          </ng-container>
+          <ng-template #editModeEmail>
+            <ion-item>
+              <ion-input [(ngModel)]="editedUser!.email" placeholder="Email" type="email"></ion-input>
+              <ion-button fill="clear" size="small" (click)="editedUser!.email = ''">
+                <ion-icon name="trash-outline"></ion-icon>
+              </ion-button>
+            </ion-item>
+          </ng-template>
+        </div>
+
+        <div>
+          <strong>Edad:</strong>
+          <ng-container *ngIf="editingUserId !== user.id; else editModeAge">
+              {{ user.age }}
+          </ng-container>
+          <ng-template #editModeAge>
+            <ion-item>
+              <ion-input [(ngModel)]="editedUser!.age" placeholder="Edad" type="number"></ion-input>
+                <ion-button fill="clear" size="small" (click)="editedUser!.age = 0" slot="end">
+                  <ion-icon name="trash-outline"></ion-icon>
+                </ion-button>
+            </ion-item>
+          </ng-template>
+        </div>
+        <br>
+        
+        <div id="button">
+          <ng-container *ngIf="editingUserId !== user.id; else editModeButtons">
+            <ion-button size="small" fill="clear" (click)="confirmDelete(user.id)">
+              <ion-icon name="trash"></ion-icon>
+            </ion-button>
+            <ion-button size="small" fill="clear" (click)="editUser(user)">
+              <ion-icon name="create"></ion-icon>
+            </ion-button>
+          </ng-container>
+          <ng-template #editModeButtons>
+            <ion-button size="small" fill="clear" color="success" (click)="saveUser()">
+              <ion-icon name="save"></ion-icon>
+            </ion-button>
+            <ion-button size="small" fill="clear" color="medium" (click)="cancelEdit()">
+              <ion-icon name="close"></ion-icon>
+            </ion-button>
+          </ng-template>
         </div>
       </ion-card-content>
     </ion-card>
